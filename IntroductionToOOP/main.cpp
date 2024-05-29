@@ -65,6 +65,19 @@ public:
 		cout << "CopyAssignment: \t\t" << this << endl;
 		return *this;
 	}
+	Point& operator++() //Prefix
+	{
+		x++;
+		y++;
+		return *this;
+	}
+	Point operator++(int) // Suffix
+	{
+		Point old = *this;
+		x++;
+		y++;
+		return old;
+	}
 
 	double distance(const Point& other)const
 	{
@@ -88,11 +101,46 @@ double distance(const Point& A, const Point& B)
 	
 }
 
+Point operator+(const Point& left, const Point& right)
+{ 
+	Point result;
+	result.set_x(left.get_x() + right.get_x());
+	result.set_y(left.get_y() + right.get_y());
+	return result;
+}
+
+Point operator-(const Point& left, const Point& right)
+{
+	Point result
+	(
+		left.get_x() - right.get_x(),
+		left.get_y() - right.get_y()
+	);
+	return result;
+	
+}
+Point operator*(const Point& left, const Point& right)
+{
+	return Point
+	(
+		left.get_x() * right.get_x(),
+		left.get_y() * right.get_y()
+	);
+}
+bool operator==(const Point& left, const Point& right)
+{
+	return left.get_x() == right.get_x() && left.get_y() == right.get_y();
+	/*if (left.get_x() == right.get_x() && left.get_y() == right.get_y())
+	return true;
+	else return false;*/
+}
+
 
 //#define STRUCT_POINT
 //#define DISTANCE_CHEK
 //#define CONSTRUCTOR_CHEK
-#define ASSIGNMENT_CHEK
+//#define ASSIGNMENT_CHEK
+//#define ARITHMETICAL_OPERATORS_CHEK
 
 
 void main()
@@ -166,6 +214,29 @@ void main()
 	A.print();
 	B.print();
 	C.print();
+
 #endif // ASSIGNMENT_CHEK
+#ifdef ARITHMETICAL_OPERATORS_CHEK
+
+
+	int a = 2;
+	int b = 3;
+	int c = a - b;
+	
+	Point A (2, 3);
+	Point B (7, 8);
+	A.print();
+	B.print();
+
+	Point C;
+	C = A * B;
+	C.print();
+
+	C++;
+	C.print();
+#endif // ARITHMETICAL_OPERATORS_CHEK
+
+	//cout << (2 == 3) << endl;
+	cout << (Point (2, 3) == Point (3, 3)) << endl;
 
 }
