@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 using namespace std;
 using std::cin;
@@ -227,8 +228,14 @@ bool operator >=(const Fraction& left, const Fraction& right)
 	return !(left < right);
 	//return left > right || left == right;
 }
-
+//stream -  поток
+// std - standart namespace
+// ostream - oitput stream (поток вывода)
+//:: - scope operator (оператор разрешения видимости - позволяет зайти в пространство имен)
+// сам по себе '::' выводит нас в globalscope (глобальное пространство имен)
+//namespace (пространство) как папка а имя, расположение в нем - как файл
 std::ostream& operator << (std::ostream& os, const Fraction& obj)
+//cout - console out
 {
 	if (obj.get_integer())os << obj.get_integer();
 	if (obj.get_numerator())
@@ -241,10 +248,37 @@ std::ostream& operator << (std::ostream& os, const Fraction& obj)
 	return os;
 	
 }
-
+//istream = input stream (потом ввода)
+std::istream& operator >> (std::istream& is, Fraction& obj)
+//cin - Console in
+{
+	const int SIZE = 32;
+	char buffer[SIZE]{};
+	//is >> buffer;
+	is.getline(buffer, SIZE);
+	int number[3];
+	int n = 0;
+	const char delimiters[] = "(/ ) +";
+	for(char* pch = strtok(buffer, delimiters); pch; pch = strtok(NULL, delimiters))
+		//Функция strtok() разделяет строку на токены
+		//
+		number[n++] = atoi(pch);
+	//Функция atoi() - ASCII string to int принимает строку и возвращает значение типа int найденное в этой строке
+	//pch - Pointer to Character (Указатель на символ)
+		//for (int i = 0; i < n; i++)cout << number[i] << "\t"; cout << endl;
+	switch(n)
+	{
+		case 1: obj = Fraction(number[0]); break;
+		case 2: obj = Fraction(number[0], number[1]); break;
+		case 3: obj = Fraction(number[0], number[1], number[2]); break;
+		
+	}
+	return is;
+}
 //#define CONSTRUCTOR_CHECK
 //#define ARITHMETICALS_OPERATORS_CHEK
 //#define COMPARISON_OPERATORS_CHEK
+#define STREAMS_CHECK
 
 void main()
 {
@@ -294,8 +328,11 @@ void main()
 	cout << (Fraction(1, 2) >= Fraction(5, 10)) << endl;
 #endif COMPARISON_OPERATORS_CHEK
 
+#ifdef STREAMS_CHECK
 	Fraction A(2, 3, 4);
-		
+	cout << "Введите пожалуйста простую дробь: "; cin >> A;
 	cout << A << endl;
+#endif // STREAMS_CHECK
+
 
 }
