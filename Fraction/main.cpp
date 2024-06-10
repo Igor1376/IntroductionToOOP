@@ -1,9 +1,13 @@
+#define USE_MATH_DEFINES
 #define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 using namespace std;
 using std::cin;
 using std::cout;
 using std::endl;
+
+#define delimiter				"\n-------------------------------------------------\n"
+#define double_delimiter		"\n=================================================\n"
 
 class Fraction;
 Fraction operator*(Fraction left, Fraction right);
@@ -51,12 +55,22 @@ public:
 		denominator = 1;
 		cout << "DefaultConstructor:\t" << this << endl;
 	}
-	Fraction(int integer)
+	explicit Fraction(int integer)
 	{
 		this->integer = integer;
 		this->numerator = 0;
 		this->denominator = 1;
 		cout << "1ArgConstructor:\t" << this << endl;
+	}
+	Fraction(double decimal)
+	{
+		decimal += 1e-10;
+		integer = decimal; 
+		decimal -= integer;
+		denominator = 1e+9;
+		numerator = decimal * denominator;
+		reduce();
+		cout << "Constructor: \t" << this << endl;
 	}
 	Fraction(int numerator, int denominator)
 	{
@@ -119,6 +133,25 @@ public:
 		integer++;
 		return old;
 
+	}
+	
+	/*
+	--------------------------------------------------------------------------
+	operator type()
+	{
+	.........;
+	.........;
+	return value;
+	}
+	---------------------------------------------------------------------------
+	*/
+	explicit operator int()
+	{
+		return integer;
+	}
+	operator double()
+	{
+		return integer + (double)numerator / denominator;
 	}
 
 	//Methods:
@@ -278,7 +311,12 @@ std::istream& operator >> (std::istream& is, Fraction& obj)
 //#define CONSTRUCTOR_CHECK
 //#define ARITHMETICALS_OPERATORS_CHEK
 //#define COMPARISON_OPERATORS_CHEK
-#define STREAMS_CHECK
+//#define STREAMS_CHECK
+//#define TYPE_COVERTIONS_BASICS
+//#define CONVERTIONS_FROM_OTHER_TO_CLASS
+#define CONVERTIONS_FROM_CLASS_TO_OTHER
+//#define CONVERTIONS_TASK_1
+#define CONVERTIONS_TASK_2
 
 void main()
 {
@@ -333,6 +371,46 @@ void main()
 	cout << "¬ведите пожалуйста простую дробь: "; cin >> A;
 	cout << A << endl;
 #endif // STREAMS_CHECK
+#ifdef TYPE_COVERTIONS_BASICS
+	int a = 2; //No conversions
+	double  b = 3; //Conversions from less to more
+	int c = b; // Conversions from more to less without data loss
+	int d = 2.5; // Conversions from more to less with data loss
+	cout << sizeof(int) << endl;
+	cout << sizeof(double) << endl;
+#endif TYPE_COVERTIONS_BASICS
+
+#ifdef CONVERTIONS_FROM_OTHER_TO_CLASS
+
+
+	Fraction A = (Fraction)5;
+	cout << A << endl;
+	
+	cout << double_delimiter << endl;
+
+	Fraction B; //default constructer
+	cout << delimiter << endl;
+	B = Fraction(8); //CopyAssignment
+	cout << delimiter << endl;
+	cout << B << endl;
+
+	cout << double_delimiter << endl;
+#endif // CONVERTIONS_FROM_OTHER_TO_CLASS
+#ifdef CONVERTIONS_TASK_1
+
+	Fraction A(2, 3, 4);
+	cout << A << endl;
+	double a = A;
+	cout << a << endl;
+
+#endif // CONVERTIONS_TASK_1
+#ifdef CONVERTIONS_TASK_2
+
+	Fraction B = 2.58;
+	cout << B << endl;
+
+
+#endif // CONVERTIONS_TASK_2
 
 
 }
