@@ -14,6 +14,7 @@ public:
 		return size;
 	}
 	// constructor
+
 	const char* get_str()const
 	{
 		return str;
@@ -22,25 +23,25 @@ public:
 	{
 		return str;
 	}
-	String(int size = 80)
+	explicit String(int size = 80) :size(size), str(new char [size] {})
 	{
-		this->size = size;
-		this->str = new char[size] {};
+		//this->size = size;
+		//this->str = new char[size] {};
 		cout << "DefaultConstructor: \t" << this << endl;
 	}
-	String(const char str[])
+	String(const char str[]):size(strlen(str) + 1), str(new char[size] {})
 	{
-		this->size = strlen(str) + 1;
-		this->str = new char[size]{};
+		//this->size = strlen(str) + 1;
+	//	this->str = new char[size]{};
 		for (int i = 0; str[i]; i++)this->str[i] = str[i];
 		cout << "Constructor: \t\t" << this << endl;
 
 	}
-	String(const String& other)
+	String(const String& other) : size(other.size), str(new char[size]{})
 	{
 		//Deep copy
-		this->size = other.size;
-		this-> str = new char [size] {};
+		//this->size = other.size;
+		//this-> str = new char [size] {};
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor:\t" << this << endl;
 	}
@@ -79,7 +80,7 @@ std::ostream& operator << (std::ostream& os, const String& obj)
 
 String operator+(const String& left, const String& right)
 {
-	String buffer = left.get_size() + right.get_size() - 1; // from int to string
+	String buffer (left.get_size() + right.get_size() - 1); // from int to string
 	for (int i = 0; i < left.get_size(); i++)	
 		buffer.get_str()[i] = left.get_str()[i];
 	for(int i = 0; i < right.get_size(); i++)
@@ -88,11 +89,37 @@ String operator+(const String& left, const String& right)
 	return buffer;
 }
 
+#define CONSTRUCTORS_CHECK
+//#define CAT_CHECK
+
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef CONSTRUCTORS_CHECK
+	String str1;
+	str1.print();
+
+	String str2(8);
+	str2.print();
+
+	String str3 = "Hello";
+	str3.print();
+
+	//String str4(); //здесь не вызываетс€ конструктор и не создаетс€ объект, создаетс€ объект,в этом выражении объ€вл€етс€ функци€ str4(), 
+	//котора€ ничего не принимает и возвращает объект класса 'String'.
+	//str4.print();
+
+	String str5{}; // явный вызов конструктора по умолчанию
+	str5.print();
+
+	String str6{ str3 };//copy constructor
+	str6.print();
+
+#endif 
+
+#ifdef CAT_CHECK
 	//String str;
-	//str.print();
+//str.print();
 	String str1 = "Hello";
 	String str2 = "World";
 	str1 = str1;
@@ -106,4 +133,6 @@ void main()
 	cout << str1 << endl;
 	cout << str2 << endl;
 	cout << str3 << endl;
+#endif // CAT_CHECK
+
 }
