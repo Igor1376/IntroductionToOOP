@@ -28,8 +28,8 @@ void main()
 #ifdef CAT_CHECK
 	//String str;
 //str.print();
-	String str1 = "Hello";
-	String str2 = "World";
+	String str1 = "Привет ";
+	String str2 = "Мир";
 	str1 = str1;
 
 	cout << str1 << endl;
